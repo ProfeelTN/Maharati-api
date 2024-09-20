@@ -30,8 +30,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 //DB Connection
 mongoose
-  .connect("mongodb://127.0.0.1:27017/maharati")
+  .connect(process.env.MONGODB_URL)
   .then(() => console.log("Connected to MongoDB"))
-  .catch(console.error);
+  .catch((err) => console.log("Error connecting to MongoDB", err));
 
 module.exports = app;

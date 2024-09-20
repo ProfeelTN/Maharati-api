@@ -27,6 +27,12 @@ app.use((req, res, next) => {
   res.setTimeout(600000);
   next();
 });
+
+// Default route to confirm server is running
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Server is running' });
+});
+
 // Routes
 const authRoute = require("./src/routes/authRoute.js");
 const userRoute = require("./src/routes/userRoute.js");
