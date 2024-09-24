@@ -12,11 +12,8 @@ const addChapterToCourse = async (courseId, chapterData, files) => {
         { upload_preset: "maharat" }
       );
       chapterData.ChapterPhoto = uploadedResponse.secure_url;
-      console.log("ChapterPhoto uploaded:", chapterData.ChapterPhoto);
     }
-
-    // Check if ChapterContent is a string and attempt to parse it
-    if (Array.isArray(chapterData.ChapterContent)) {
+    if (chapterData?.ChapterContent !== null) {
       console.log("Processing ChapterContent...");
       for (let content of chapterData.ChapterContent) {
         if (content.type === "Photo" && content.value) {
