@@ -30,8 +30,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 //DB Connection
 mongoose
-  .connect("mongodb://127.0.0.1:27017/maharati")
-  .then(() => console.log("Connected to MongoDB"))
-  .catch(console.error);
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Atlas connected"))
+  .catch((error) => console.error("MongoDB connection error:", error));
 
 module.exports = app;
