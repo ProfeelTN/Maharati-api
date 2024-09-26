@@ -13,7 +13,7 @@ async function login(req, res) {
     });
     res.json({ user: found, accessToken: token, refreshToken: refresh });
   } catch (error) {
-    res.status(401).json({ message: "Invalid credentials" });
+    res.status(401).json(error.message);
   }
 }
 module.exports = { login };
