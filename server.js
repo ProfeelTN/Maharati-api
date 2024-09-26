@@ -51,7 +51,6 @@ app.use("/users", userRoute);
 app.use("/courses", courseRoute);
 app.use("/evaluations", evaluationRoute);
 app.use("/refresh-token", refreshRoute);
-
 app.listen(PORT, () => {
   console.log("Server running on Port ", PORT);
 });
