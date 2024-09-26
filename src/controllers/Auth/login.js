@@ -10,7 +10,6 @@ async function login(req, res) {
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
       secure: isProduction,
-      sameSite: isProduction ? "Strict" : "Lax",
     });
     res.json({ user: found, accessToken: token, refreshToken: refresh });
   } catch (error) {
