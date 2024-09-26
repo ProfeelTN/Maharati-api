@@ -31,7 +31,7 @@ async function login(cred, password) {
     }
   } catch (error) {
     console.error("Error:", error.message);
-    throw new Error("Internal Server Error");
+    throw new Error(error.message);
   }
 }
 module.exports = { login };
