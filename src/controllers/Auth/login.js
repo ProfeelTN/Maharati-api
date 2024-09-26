@@ -8,7 +8,7 @@ async function login(req, res) {
     const { token, refresh, found } = await authService.login(cred, Password);
     res.cookie("jwt", refresh, {
       httpOnly: true,
-      maxAge: 60 * 60 * 1000,
+      maxAge: 2 * 0 * 60 * 1000,
       secure: isProduction,
     });
     res.json({ user: found, accessToken: token, refreshToken: refresh });
