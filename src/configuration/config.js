@@ -9,7 +9,7 @@ const cookieSession = require("cookie-session");
 require("dotenv").config();
 
 const corsOptions = {
-  origin: `${process.env.CLIENT_URL}`,
+  origin: "https://maharati-api-bj68.onrender.com",
   credentials: true,
 };
 app.options("*", cors(corsOptions));
