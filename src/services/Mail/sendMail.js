@@ -69,7 +69,7 @@ async function sendMail(destination, subject, content) {
 </head>
 <body>
     <div class="header">
-        <img src="https://www.dropbox.com/scl/fi/r7ggkgji1q4nd6tyklxak/LOGO.png?rlkey=y7n9gcxzoo3gtlistuj84r8c6&st=k5l0tplb&raw=1" alt="Logo">
+        <img src="https://res.cloudinary.com/derytlbaz/image/upload/v1727363222/logo/dho0rbjfhcmgpwlg23io.png" alt="Logo">
     </div>
     <div class="container">
         <div class="content">
@@ -178,7 +178,7 @@ async function composeMail(destination, subject, content) {
 </head>
 <body>
     <div class="header">
-        <img src="https://www.dropbox.com/scl/fi/r7ggkgji1q4nd6tyklxak/LOGO.png?rlkey=y7n9gcxzoo3gtlistuj84r8c6&st=k5l0tplb&raw=1" alt="Logo">
+        <img src="https://res.cloudinary.com/derytlbaz/image/upload/v1727363222/logo/dho0rbjfhcmgpwlg23io.png" alt="Logo">
     </div>
     <div class="container">
         <div class="content">
@@ -300,7 +300,7 @@ async function sendDailyReminder() {
   </head>
   <body>
       <div class="header">
-          <img src="https://www.dropbox.com/scl/fi/r7ggkgji1q4nd6tyklxak/LOGO.png?rlkey=y7n9gcxzoo3gtlistuj84r8c6&st=k5l0tplb&raw=1" alt="Logo">
+          <img src="https://res.cloudinary.com/derytlbaz/image/upload/v1727363222/logo/dho0rbjfhcmgpwlg23io.png" alt="Logo">
       </div>
       <div class="container">
           <div class="content">
@@ -444,7 +444,7 @@ async function send30MinutesReminder() {
 </head>
 <body>
     <div class="header">
-        <img src="https://www.dropbox.com/scl/fi/r7ggkgji1q4nd6tyklxak/LOGO.png?rlkey=y7n9gcxzoo3gtlistuj84r8c6&st=k5l0tplb&raw=1" alt="Logo">
+        <img src="https://res.cloudinary.com/derytlbaz/image/upload/v1727363222/logo/dho0rbjfhcmgpwlg23io.png" alt="Logo">
     </div>
     <div class="container">
         <div class="content">

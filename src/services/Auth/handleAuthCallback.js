@@ -14,10 +14,13 @@ function handleAuthCallback(strategyName) {
       }
 
       const { refreshToken } = data;
+      const isProduction = process.env.NODE_ENV === "production";
 
       res.cookie("jwt", refreshToken, {
         httpOnly: true,
-        maxAge: 60 * 60 * 1000,
+        maxAge: 2 * 60 * 60 * 1000,
+        secure: isProduction,
+        sameSite: "none",
       });
 
       const from = req.session.from || "/";
