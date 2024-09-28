@@ -39,6 +39,7 @@ const auditRoute = require("./src/routes/auditRoute.js");
 const mailRoute = require("./src/routes/mailRoute.js");
 const notiRoute = require("./src/routes/notifRoute.js");
 const { AI } = require("./geminiAPI.js");
+const testFinalRoutes = require('./src/routes/TestFinalRoutes');
 
 app.use("/ask-ai", AI);
 app.use("/", authRoute);
@@ -51,6 +52,7 @@ app.use("/users", userRoute);
 app.use("/courses", courseRoute);
 app.use("/evaluations", evaluationRoute);
 app.use("/refresh-token", refreshRoute);
+app.use("/testfinals", testFinalRoutes);
 
 app.listen(PORT, () => {
   console.log("Server running on Port ", PORT);

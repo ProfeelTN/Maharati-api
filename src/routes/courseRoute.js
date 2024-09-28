@@ -33,7 +33,7 @@ router.delete(
   deleteCourse
 );
 router.get("/", fetchCourses);
-router.get("/:id", authMiddleware.authenticateToken, fetchCourse);
+router.get("/:id",  fetchCourse);
 router.post("/:courseId/chapters", upload.array("files"), addChapter);
 router.post("/:courseId/chapters/:chapterId/quiz", addQuizToChapter);
 
