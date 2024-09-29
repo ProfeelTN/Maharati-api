@@ -38,7 +38,12 @@ const contentSchema = new Schema({
     validate: {
       validator: function (v) {
         // Validation based on type
-        if (this.type === "Text" || this.type === "Heading1" || this.type === "Heading2" || this.type === "Heading3") {
+        if (
+          this.type === "Text" ||
+          this.type === "Heading1" ||
+          this.type === "Heading2" ||
+          this.type === "Heading3"
+        ) {
           return typeof v === "string" && v.trim() !== ""; // Ensure non-empty string
         } else if (this.type === "Quiz") {
           // Ensure value is an array of quiz objects
@@ -53,7 +58,7 @@ const contentSchema = new Schema({
                 typeof quiz.correctAnswer === "string"
             )
           );
-        } else if (this.type === "Photo" || this.type === "Video" ) {
+        } else if (this.type === "Photo" || this.type === "Video") {
           // Allow empty value but also accept a non-empty string
           return typeof v === "string" || v === ""; // Accept empty string
         }
@@ -68,7 +73,12 @@ const contentSchema = new Schema({
     },
   },
 });
-
+const quizSchema = new Schema({
+  text: { type: String, required: true },
+  options: [{ type: String, required: true }],
+  correctAnswer: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
 // Define Chapter Schema
 const chapterSchema = new Schema({
   ChapterPhoto: String,
@@ -76,6 +86,8 @@ const chapterSchema = new Schema({
   ChapterVideo: String,
   ChapterContent: [contentSchema], // Validate that ChapterContent is an array of `contentSchema`
   Files: [String], // Files should be an array of strings
+
+  Quizzs: [quizSchema],
   createdAt: {
     type: Date,
     default: Date.now, // Automatically set the current date
