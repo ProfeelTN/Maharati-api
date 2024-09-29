@@ -29,9 +29,12 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 //DB Connection
+// mongoose
+//   .connect(process.env.MONGO_URI)
+//   .then(() => console.log("MongoDB Atlas connected"))
+//   .catch((error) => console.error("MongoDB connection error:", error));
 mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Atlas connected"))
-  .catch((error) => console.error("MongoDB connection error:", error));
-
+  .connect("mongodb://127.0.0.1:27017/maharati")
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(console.error);
 module.exports = app;

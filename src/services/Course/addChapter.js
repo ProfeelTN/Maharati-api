@@ -13,83 +13,136 @@ const addChapterToCourse = async (courseId, chapterData, files) => {
       );
       chapterData.ChapterPhoto = uploadedResponse.secure_url;
     }
-    if (chapterData?.ChapterContent !== null) {
-      console.log("Processing ChapterContent...");
-      for (let content of chapterData.ChapterContent) {
-        if (content.type === "Photo" && content.value) {
-          if (content.value.startsWith("data:image")) {
-            console.log("Uploading photo content...");
-            try {
-              const uploadedResponse = await cloudinary.uploader.upload(
-                content.value,
-                { upload_preset: "maharat" }
-              );
-              content.value = uploadedResponse.secure_url;
-              console.log("Photo uploaded successfully:", content.value);
-            } catch (error) {
-              console.error("Error uploading photo to Cloudinary:", error);
-            }
+    if (
+      !chapterData.ChapterContent ||
+      !Array.isArray(chapterData.ChapterContent)
+    ) {
+      throw new Error(
+        "ChapterContent must be a valid array of content objects."
+      );
+    }
+
+    // Validate each entry in ChapterContent
+    for (let content of chapterData.ChapterContent) {
+      if (typeof content !== "object" || content === null) {
+        throw new Error("Each ChapterContent entry must be an object.");
+      }
+      if (!content.type || typeof content.type !== "string") {
+        throw new Error("ChapterContent type must be defined and be a string.");
+      }
+
+      if (content.type === "Text") {
+        // Ensure value is a non-empty string
+        if (typeof content.value !== "string" || content.value.trim() === "") {
+          throw new Error("ChapterContent value must be a non-empty string.");
+        }
+      } else if (content.type === "Quiz") {
+        // Ensure that content.value is an array for quizzes
+        if (!Array.isArray(content.value) || content.value.length === 0) {
+          throw new Error("Quiz content must be a non-empty array.");
+        }
+
+        // Validate each quiz item
+        for (let item of content.value) {
+          if (
+            typeof item.question !== "string" ||
+            item.question.trim() === ""
+          ) {
+            throw new Error(
+              "Each quiz item must contain a valid question (non-empty string)."
+            );
           }
-        } else if (content.type === "Video" && content.value) {
-          if (content.value.startsWith("data:video")) {
-            console.log("Uploading video content...");
-
-            // Function to upload video with retry logic
-            async function uploadVideoWithRetry(videoData, retries = 3) {
-              try {
-                const result = await new Promise((resolve, reject) => {
-                  // Use stream for chunked uploads
-                  const stream = cloudinary.uploader.upload_stream(
-                    {
-                      resource_type: "video",
-                      upload_preset: "Files",
-                      format: "mp4",
-                      transformation: [
-                        { height: "640", crop: "scale", quality: "80" },
-                      ],
-                      chunk_size: 60000000, // Increase or decrease based on your network capabilities
-                      timeout: 60000, // Setting a timeout for large uploads
-                    },
-                    (error, result) => {
-                      if (error) {
-                        reject(error);
-                      } else {
-                        resolve(result);
-                      }
-                    }
-                  );
-
-                  // End the stream with video data
-                  stream.end(videoData);
-                });
-
-                console.log("Uploaded Response:", result);
-                return result;
-              } catch (error) {
-                console.error("Error uploading video to Cloudinary:", error);
-                if (retries > 0) {
-                  console.log(`Retrying upload... (${retries} retries left)`);
-                  return uploadVideoWithRetry(videoData, retries - 1);
-                }
-                throw error;
-              }
-            }
-
-            try {
-              // Upload video and set the content.value to the URL
-              const uploadedResponse = await uploadVideoWithRetry(
-                content.value
-              );
-              content.value = uploadedResponse.secure_url;
-              console.log("Video uploaded successfully:", content.value);
-            } catch (error) {
-              console.error("Failed to upload video after retries:", error);
-            }
+          if (!Array.isArray(item.options) || item.options.length < 2) {
+            throw new Error("Each quiz item must have at least two options.");
+          }
+          if (
+            typeof item.correctAnswer !== "string" ||
+            item.correctAnswer.trim() === ""
+          ) {
+            throw new Error(
+              "Each quiz item must have a valid correct answer (non-empty string)."
+            );
           }
         }
       }
-    } else {
-      throw new Error("ChapterContent must be an array.");
+      if (content.type === "Photo") {
+        // Allow empty value temporarily, but handle it correctly
+        if (content.value && content.value.startsWith("data:image")) {
+          console.log("Uploading photo content...");
+          try {
+            const uploadedResponse = await cloudinary.uploader.upload(
+              content.value,
+              { upload_preset: "maharat" }
+            );
+            content.value = uploadedResponse.secure_url;
+            console.log("Photo uploaded successfully:", content.value);
+          } catch (error) {
+            console.error("Error uploading photo to Cloudinary:", error);
+            throw new Error("Photo upload failed");
+          }
+        } else if (!content.value) {
+          console.warn(
+            "Photo value is empty. It will be treated as a placeholder."
+          );
+          // You may choose to set a default value or handle it differently
+        }
+      }
+      if (content.type === "Video") {
+        // Allow empty value temporarily, but handle it correctly
+        if (content.value.startsWith("data:video")) {
+          console.log("Uploading video content...");
+
+          // Function to upload video with retry logic
+          async function uploadVideoWithRetry(videoData, retries = 3) {
+            try {
+              const result = await new Promise((resolve, reject) => {
+                // Use stream for chunked uploads
+                const stream = cloudinary.uploader.upload_stream(
+                  {
+                    resource_type: "video",
+                    upload_preset: "Files",
+                    format: "mp4",
+                    transformation: [
+                      { height: "640", crop: "scale", quality: "80" },
+                    ],
+                    chunk_size: 60000000, // Increase or decrease based on your network capabilities
+                    timeout: 60000, // Setting a timeout for large uploads
+                  },
+                  (error, result) => {
+                    if (error) {
+                      reject(error);
+                    } else {
+                      resolve(result);
+                    }
+                  }
+                );
+
+                // End the stream with video data
+                stream.end(videoData);
+              });
+
+              console.log("Uploaded Response:", result);
+              return result;
+            } catch (error) {
+              console.error("Error uploading video to Cloudinary:", error);
+              if (retries > 0) {
+                console.log(`Retrying upload... (${retries} retries left)`);
+                return uploadVideoWithRetry(videoData, retries - 1);
+              }
+              throw error;
+            }
+          }
+
+          try {
+            // Upload video and set the content.value to the URL
+            const uploadedResponse = await uploadVideoWithRetry(content.value);
+            content.value = uploadedResponse.secure_url;
+            console.log("Video uploaded successfully:", content.value);
+          } catch (error) {
+            console.error("Failed to upload video after retries:", error);
+          }
+        }
+      }
     }
 
     // Handle ChapterVideo upload

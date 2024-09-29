@@ -52,11 +52,8 @@ app.use("/users", userRoute);
 app.use("/courses", courseRoute);
 app.use("/evaluations", evaluationRoute);
 app.use("/refresh-token", refreshRoute);
-<<<<<<< HEAD
 app.use("/testfinals", testFinalRoutes);
 
-=======
->>>>>>> 231ea3ada284a4dbc978f343bc6ee0a3add21952
 app.listen(PORT, () => {
   console.log("Server running on Port ", PORT);
 });
