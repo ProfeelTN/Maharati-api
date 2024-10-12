@@ -65,19 +65,24 @@ router.get(
 
 router.get(
   "/auth/google",
-  passport.authenticate("google", ["profile", "email"])
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
+
 router.get(
   "/auth/facebook",
-  passport.authenticate("facebook", ["profile", "email"])
+  passport.authenticate("facebook", { scope: ["email", "public_profile"] })
 );
+
 router.get(
   "/auth/github",
-  passport.authenticate("github", ["profile", "email"])
+  passport.authenticate("github", { scope: ["user:email"] })
 );
+
 router.get(
   "/auth/linkedin",
-  passport.authenticate("linkedin", ["profile", "email"])
+  passport.authenticate("linkedin", {
+    scope: ["r_emailaddress", "r_liteprofile"],
+  })
 );
 
 module.exports = router;
