@@ -49,11 +49,15 @@ const CourseSchema = new Schema({
     default: true,
   },
   CourseStart: {
-    type: Date,
+    type: String,
     //required: [true, "Please Enter a Valid Start date"],
   },
+  Duration: {
+    type: String,
+    //required: [true, "Please Enter a Valid
+  },
   CourseEnd: {
-    type: Date,
+    type: String,
     //required: [true, "Please Enter a Valid End date"],
   },
 

@@ -8,6 +8,14 @@ async function fetchCourses(req, res) {
     res.status(401).json({ message: "Error fetching Courses" });
   }
 }
+async function fetchCoursesByUser(req, res) {
+  try {
+    const courses = await courseService.fetchCoursesByUser(req.params.userId);
+    res.status(200).json(courses);
+  } catch (error) {
+    res.status(401).json({ message: "Error fetching Courses" });
+  }
+}
 async function fetchCourse(req, res) {
   try {
     const course = await courseService.fetchCourse(req.params.id);
@@ -21,4 +29,4 @@ async function fetchCourse(req, res) {
   }
 }
 
-module.exports = { fetchCourses, fetchCourse };
+module.exports = { fetchCourses, fetchCourse, fetchCoursesByUser };

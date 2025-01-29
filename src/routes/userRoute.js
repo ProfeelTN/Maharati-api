@@ -46,4 +46,5 @@ router.get(
   verifyRole(ROLES.ADMIN),
   fetchUser
 );
+router.get("/instructor/:id", fetchUser);
 module.exports = router;

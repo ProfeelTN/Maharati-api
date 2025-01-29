@@ -3,9 +3,11 @@ const router = require("express").Router();
 const { createCourse } = require("../controllers/Course/createCourse");
 const { updateCourse } = require("../controllers/Course/updateCourse");
 const { deleteCourse } = require("../controllers/Course/deleteCourse");
+const { deleteChapter } = require("../controllers/Course/deleteChapter");
 const {
   fetchCourses,
   fetchCourse,
+  fetchCoursesByUser,
 } = require("../controllers/Course/coursesFetch");
 const authMiddleware = require("../utils/authMiddleware");
 const addChapter = require("../controllers/Course/addChapter");
@@ -32,8 +34,15 @@ router.delete(
   verifyRole(ROLES.ADMIN, ROLES.INSTRUCTOR),
   deleteCourse
 );
+router.delete(
+  "/delete/chapter/:courseId/:chapterId",
+  authMiddleware.authenticateToken,
+  verifyRole(ROLES.ADMIN, ROLES.INSTRUCTOR),
+  deleteChapter
+);
 router.get("/", fetchCourses);
-router.get("/:id",  fetchCourse);
+router.get("/user/:userId", fetchCoursesByUser);
+router.get("/:id", fetchCourse);
 router.post("/:courseId/chapters", upload.array("files"), addChapter);
 router.post("/:courseId/chapters/:chapterId/quiz", addQuizToChapter);
 
